@@ -1,5 +1,6 @@
 'use client';
 
+import { scrapeAndStoreProduct } from '@/lib/actions';
 // https://www.youtube.com/watch?v=lh9XVGv6BHs&ab_channel=JavaScriptMastery
 // 1"03"04
 
@@ -12,7 +13,7 @@ const isValidAmazonProductURL = (url: string) => {
 
     if (
       hostname.includes('amazon.com') ||
-      hostname.includes('amazon') ||
+      hostname.includes('amazon.') ||
       hostname.endsWith('amazon')
     ) {
       return true;
@@ -25,14 +26,24 @@ const isValidAmazonProductURL = (url: string) => {
 
 const Searchbar = () => {
   const [searchPrompt, setSearchPrompt] = useState('');
-  console.log(searchPrompt);
+  const [isLoading, setIsLoading] = useState(false);
 
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     const isValidLink = isValidAmazonProductURL(searchPrompt);
 
-    alert(isValidLink ? 'Valid link' : 'Invalid link');
+    if (!isValidLink) return alert(isValidLink ? 'Valid link' : 'Invalid link');
+
+    try {
+      setIsLoading(true);
+      //Scrape the profuct page
+      const product = await scrapeAndStoreProduct(searchPrompt);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -40,13 +51,17 @@ const Searchbar = () => {
       <input
         type='text'
         value={searchPrompt}
-        onChange={(e) => setSearchPrompt(e.target.value)}
+        onChange={e => setSearchPrompt(e.target.value)}
         placeholder='Enter product link'
         className='searchbar-input'
       />
 
-      <button type='submit' className='searchbar-btn'>
-        Search
+      <button
+        type='submit'
+        className='searchbar-btn'
+        disabled={searchPrompt === ''}
+      >
+        {isLoading ? 'Searching...' : 'Search'}
       </button>
     </form>
   );
