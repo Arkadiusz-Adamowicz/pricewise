@@ -51,5 +51,4 @@ const Home = async () => {
 
 export default Home;
 
-// https://www.youtube.com/watch?v=lh9XVGv6BHs&t=8613s
-// 2:53:20
+
