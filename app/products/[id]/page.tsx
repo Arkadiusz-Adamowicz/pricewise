@@ -132,16 +132,12 @@ const ProductDetails = async ({ params: { id } }: Props) => {
                 <PriceInfoCard
                   title='Highest Price'
                   iconSrc='/assets/icons/arrow-up.svg'
-                  value={`${product.highestPrice} ${formatNumber(
-                    product.highestPrice
-                  )}`}
+                  value={`${product.highestPrice}`}
                 />
                 <PriceInfoCard
                   title='Lowest Price'
                   iconSrc='/assets/icons/arrow-down.svg'
-                  value={`${product.lowestPrice} ${formatNumber(
-                    product.lowestPrice
-                  )}`}
+                  value={`${product.lowestPrice}`}
                 />
               </div>
             </div>
@@ -176,7 +172,7 @@ const ProductDetails = async ({ params: { id } }: Props) => {
           <p className='section-text'>Similar Products</p>
 
           <div className='flex flex-wrap gap-10 mt-7 w-full'>
-            {similarProducts.map(product => (
+            {similarProducts.map((product) => (
               <ProductCard key={product._id} product={product} />
             ))}
           </div>
