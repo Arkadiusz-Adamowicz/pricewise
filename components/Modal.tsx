@@ -126,7 +126,11 @@ const Modal = ({ productId }: Props) => {
                       className='dialog-input'
                     />
                   </div>
-                  <button type='submit' className='dialog-btn'>
+                  <button
+                    type='submit'
+                    className='dialog-btn'
+                    onClick={handleSubmit}
+                  >
                     {isSubmitting ? 'Submitting...' : 'Track'}
                   </button>
                 </form>
