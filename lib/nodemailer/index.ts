@@ -1,8 +1,9 @@
-import { EmailContent } from './../../types/index';
-import { EmailProductInfo, NotificationType } from '@/types';
+'use server';
+
+import { EmailContent, EmailProductInfo, NotificationType } from '@/types';
 import nodemailer from 'nodemailer';
 
-export const Notification = {
+const Notification = {
   WELCOME: 'WELCOME',
   CHANGE_OF_STOCK: 'CHANGE_OF_STOCK',
   LOWEST_PRICE: 'LOWEST_PRICE',
@@ -94,13 +95,14 @@ export const sendEmail = async (
   emailContent: EmailContent,
   sendTo: string[]
 ) => {
-  const mailOptions = {
+  const options = {
     from: 'a.adamowicz81@hotmail.com',
     to: sendTo,
-    html: emailContent.subject,
+    html: emailContent.body,
     subject: emailContent.subject,
   };
-  transporter.sendMail(mailOptions, (error: any, info: any) => {
+
+  transporter.sendMail(options, (error: any, info: any) => {
     if (error) return console.log(error);
 
     console.log('Email sent: ', info);

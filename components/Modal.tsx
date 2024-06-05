@@ -17,19 +17,26 @@ interface Props {
 }
 
 const Modal = ({ productId }: Props) => {
-  let [isOpen, setIsOpen] = useState(false);
+  let [isOpen, setIsOpen] = useState(true);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [email, setEmail] = useState('');
+  const [error, setError] = useState<string | null>(null);
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsSubmitting(true);
-    console.log('click');
+    setError(null);
 
-    addUserEmailToProduct(productId, email);
-    setIsSubmitting(false);
-    setEmail('');
-    close();
+    try {
+      await addUserEmailToProduct(productId, email);
+      setEmail('');
+      close();
+    } catch (err) {
+      console.error('Failed to add email to product', err);
+      setError('Failed to add email to product. Please try again.');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const open = () => setIsOpen(true);
@@ -101,7 +108,11 @@ const Modal = ({ productId }: Props) => {
                   </p>
                 </div>
 
-                <form className='flex flex-col mt-5' onSubmit={handleSubmit}>
+                <form
+                  className='flex flex-col mt-5'
+                  name='email'
+                  onSubmit={handleSubmit}
+                >
                   <label
                     htmlFor='email'
                     className='text-sm font-medium text-gray-700'
@@ -121,14 +132,18 @@ const Modal = ({ productId }: Props) => {
                       type='email'
                       id='email'
                       value={email}
-                      onChange={(e) => setEmail(e.target.value)}
+                      onChange={e => setEmail(e.target.value)}
                       placeholder='Enter your email address'
                       className='dialog-input'
                     />
                   </div>
+                  {error && (
+                    <p className='text-red-500 text-sm mt-2'>{error}</p>
+                  )}
                   <button
                     type='submit'
                     className='dialog-btn'
+                    disabled={isSubmitting}
                     onClick={handleSubmit}
                   >
                     {isSubmitting ? 'Submitting...' : 'Track'}
