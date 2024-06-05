@@ -111,7 +111,10 @@ const Modal = ({ productId }: Props) => {
                 <form
                   className='flex flex-col mt-5'
                   name='email'
-                  onSubmit={handleSubmit}
+                  onSubmit={e => {
+                    e.preventDefault();
+                    handleSubmit;
+                  }}
                 >
                   <label
                     htmlFor='email'
@@ -140,12 +143,7 @@ const Modal = ({ productId }: Props) => {
                   {error && (
                     <p className='text-red-500 text-sm mt-2'>{error}</p>
                   )}
-                  <button
-                    type='submit'
-                    className='dialog-btn'
-                    disabled={isSubmitting}
-                    onClick={handleSubmit}
-                  >
+                  <button type='submit' className='dialog-btn'>
                     {isSubmitting ? 'Submitting...' : 'Track'}
                   </button>
                 </form>
