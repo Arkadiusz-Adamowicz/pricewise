@@ -25,33 +25,29 @@ const Modal = ({ productId }: Props) => {
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsSubmitting(true);
-    setError(null);
 
-    try {
-      await addUserEmailToProduct(productId, email);
-      setEmail('');
-      close();
-    } catch (err) {
-      console.error('Failed to add email to product', err);
-      setError('Failed to add email to product. Please try again.');
-    } finally {
-      setIsSubmitting(false);
-    }
+    await addUserEmailToProduct(productId, email);
+
+    setIsSubmitting(false);
+    setEmail('');
+    closeModal();
   };
 
-  const open = () => setIsOpen(true);
-  const close = () => setIsOpen(false);
+  const openModal = () => setIsOpen(true);
+
+  const closeModal = () => setIsOpen(false);
 
   return (
     <>
-      <button type='button' className='btn' onClick={open}>
+      <button type='button' className='btn' onClick={openModal}>
         Track
       </button>
 
-      <Transition appear show={isOpen}>
-        <Dialog as='div' onClose={() => {}} className='dialog-container'>
+      <Transition appear show={isOpen} as={Fragment}>
+        <Dialog onClose={closeModal} className='dialog-container'>
           <div className='min-h-screen px-4 text-center'>
             <TransitionChild
+              as={Fragment}
               enter='ease-out duration-300'
               enterFrom='opacity-0'
               enterTo='opacity-100'
@@ -94,7 +90,7 @@ const Modal = ({ productId }: Props) => {
                       width={24}
                       height={24}
                       className='cursor-pointer'
-                      onClick={close}
+                      onClick={closeModal}
                     />
                   </div>
 
@@ -111,10 +107,7 @@ const Modal = ({ productId }: Props) => {
                 <form
                   className='flex flex-col mt-5'
                   name='email'
-                  onSubmit={e => {
-                    e.preventDefault();
-                    handleSubmit;
-                  }}
+                  onSubmit={handleSubmit}
                 >
                   <label
                     htmlFor='email'
