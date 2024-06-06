@@ -124,7 +124,7 @@ const Modal = ({ productId }: Props) => {
                       type='email'
                       id='email'
                       value={email}
-                      onChange={e => setEmail(e.target.value)}
+                      onChange={(e) => setEmail(e.target.value)}
                       placeholder='Enter your email address'
                       className='dialog-input'
                     />
@@ -135,7 +135,16 @@ const Modal = ({ productId }: Props) => {
                   <button
                     type='submit'
                     className='dialog-btn'
-                    onClick={handleSubmit}
+                    onClick={async (e: any) => {
+                      e.preventDefault();
+                      setIsSubmitting(true);
+
+                      await addUserEmailToProduct(productId, email);
+
+                      setIsSubmitting(false);
+                      setEmail('');
+                      closeModal();
+                    }}
                   >
                     {isSubmitting ? 'Submitting...' : 'Track'}
                   </button>
