@@ -44,7 +44,7 @@ const Modal = ({ productId }: Props) => {
       </button>
 
       <Transition appear show={isOpen} as={Fragment}>
-        <Dialog onClose={closeModal} className='dialog-container'>
+        <Dialog onClose={() => {}} className='dialog-container'>
           <div className='min-h-screen px-4 text-center'>
             <TransitionChild
               as={Fragment}
@@ -104,11 +104,7 @@ const Modal = ({ productId }: Props) => {
                   </p>
                 </div>
 
-                <form
-                  className='flex flex-col mt-5'
-                  name='email'
-                  onSubmit={handleSubmit}
-                >
+                <form className='flex flex-col mt-5' name='email'>
                   <label
                     htmlFor='email'
                     className='text-sm font-medium text-gray-700'
@@ -136,7 +132,11 @@ const Modal = ({ productId }: Props) => {
                   {error && (
                     <p className='text-red-500 text-sm mt-2'>{error}</p>
                   )}
-                  <button type='submit' className='dialog-btn'>
+                  <button
+                    type='submit'
+                    className='dialog-btn'
+                    onClick={handleSubmit}
+                  >
                     {isSubmitting ? 'Submitting...' : 'Track'}
                   </button>
                 </form>
