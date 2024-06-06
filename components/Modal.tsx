@@ -22,7 +22,7 @@ const Modal = ({ productId }: Props) => {
   const [email, setEmail] = useState('');
   const [error, setError] = useState<string | null>(null);
 
-  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: any) => {
     e.preventDefault();
     setIsSubmitting(true);
 
@@ -135,16 +135,7 @@ const Modal = ({ productId }: Props) => {
                   <button
                     type='submit'
                     className='dialog-btn'
-                    onClick={async (e: any) => {
-                      e.preventDefault();
-                      setIsSubmitting(true);
-
-                      await addUserEmailToProduct(productId, email);
-
-                      setIsSubmitting(false);
-                      setEmail('');
-                      closeModal();
-                    }}
+                    onClick={handleSubmit}
                   >
                     {isSubmitting ? 'Submitting...' : 'Track'}
                   </button>
